@@ -1253,7 +1253,7 @@ sensitivity_r = st_rasterize(lhz_v[,'sensitivity'], blank)
 plot(sensitivity_r)
 ```
 
-### Vulnerability score
+### Additive Vulnerability score
 
 Calculate an aggregated vulnerability score by adding low adaptive capacity (invert adaptive capacity by subtracting from the maximum score of 40), livelihood sensitivity, drought exposure, and flood risk.
 
@@ -1309,6 +1309,13 @@ write_sf(ta_v, here(results), "ta")
 write_sf(lhz_v, here(results), "lhz")
 ```
 
+### Comparison with Geometric Vulnerability score
+
+Calculate an aggregated vulnerability score by multiplying low adaptive capacity (invert adaptive capacity by subtracting from the maximum score of 40), livelihood sensitivity, and drought exposure added to flood risk.
+
+$$
+Vulnerability = (40 - Adaptive Capacity) * Livelihood Sensitivity * (Drought Exposure + Flood Risk)
+$$
 
 ### Evaluate vulnerability reproduction
 
