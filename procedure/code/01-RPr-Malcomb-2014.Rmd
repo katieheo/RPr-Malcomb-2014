@@ -583,7 +583,7 @@ paste(sum(is.na(cluster_ta$ta_id)),
   "clusters did not spatially join to a populated traditional authority") %>% noquote()
 ```
 
-```{r join-clusterta-to-surveys}
+```{r join-clusterta-to-surveys, eval=FALSE}
 # join traditional authority and urban/rural data from DHS clusters to each DHS survey
 # select variables for adaptive capacity analysis
 dhshh <- dhshh %>%
