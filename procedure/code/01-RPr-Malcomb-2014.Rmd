@@ -53,7 +53,7 @@ The working hypotheses are therefore:
 
 > H1: There is no perfect positive correlation between Malcomb et al's ranking of traditional authorities by household resilience and our reproduction study's ranking of traditional authorities by household resilience.
 
-> H2: There is no perfect positive between Malcom et al's ranking of locations by climate vulnerability and our reproduction study's ranking of locations by climate vulnerability.
+> H2: There is no perfect positive between Malcomb et al's ranking of locations by climate vulnerability and our reproduction study's ranking of locations by climate vulnerability.
 
 We will evaluate each of these hypotheses using a Spearman's Rho Correlation. A failure to reject these hypotheses would indicate that our results do not exactly match those of the original authors. A positive correlation approaching 1 would indicate a partial reproduction
 
@@ -681,7 +681,7 @@ The spatial analysis techniques in this study are not sensitive to edge effects.
 
 The analysis does not include creation of any **spatial subgroups** and does not measure or account for any **spatial autocorrelation**, **spatial heterogeneity**, or **spatial anistropies**.
 
-# Analysis and Discussion
+# Analysis
 
 ## Planned differences from the original study
 
@@ -714,6 +714,8 @@ We will plan to make the following reasonable decisions, which may differ from t
 1. Any traditional authority missing adaptive capacity data from DHS surveys will be removed / masked from the final vulnerability analysis.
 
 ## Adaptive Capacity
+
+For the purposes of the reproduction study, the data visualized in figure 4 of the original study and referred to as '40% Adaptive Capacity' in table 2 will be referred to as **adaptive capacity** while the data visualized in figure 5 of the original study and referred to as 100% Household Resilience in table 2 will be referred to as **vulnerability**.
 
 The variables for adaptive capacity are aggregated into thematic concepts and referenced in the original paper as outlined below:
 
@@ -1425,7 +1427,40 @@ write_stars(vulnerability_r, here(public_d, "fig5or.tif"), layer = "orv")
 write_stars(vulnerability_r, here(public_d, "fig5rp.tif"), layer = "rpv")
 ```
 
+# Discussion
+
+## Navigating Error and Uncertainty
+
+### Data Collection and Spatial Sampling 
+
+The original study included over 70 qualitative semi-structured interviews with officials from development agencies, government, and non-governmental organizations (1.4). 47 specific interviewee titles are listed in a "full list of the interviews" (A1), leaving uncertainty around the remaining 23 (or more) interviewees. The study included 11 village focus groups (1.4). The interviews and focus groups were selected to focus on villages and organizations connected at different levels of organization to "externally designed adaptation projects" (3.2). We presume that the interviewees and focus groups were selected based upon their association with externally designed and funded climate change adaptation projects, which are neither equally nor justly distributed (Barrett 2014). No minimum sample size or stopping criteria were defined.
+
+The original authors used exclusively secondary data for the vulnerability models and did not subset or sample from the secondary data. The published results based on DHS surveys include data 203 traditional authorities in 2010 (F4), whereas the authors state that there are more than 250 populated traditional authorities in Malawi (4.4). The 2010 household resilience data is based upon 24,850 DHS household surveys (5.2). Furthermore, "not every traditional authority had surveys conducted within its administrative boundaries" (5.2). This suggests possible spatial sampling problems in the DHS survey data in the context of its application in this study. The authors' rationales for using the third level administrative units of traditional authorities include matching the political level at which many projects are planned and assessed, and identifying hotspots of vulnerability that are lost in the aggregation to second level districts (4.4). The original paper does not contain any further detail on the spatial sampling or distribution of DHS surveys vis a vis traditional authorities.
+
+### Aggregate thematic concepts
+
+The authors use the terms and definitions of "adaptive capacity", "vulnerability" and "resilience" inconsistently in the paper. Depending on context, both "vulnerability" and "resilience" may refer only to the assets and access portion of the model or to the full model inclusive of adaptive capacity (assets and access), livelihood sensitivity, and exposure. In some sections and formulas, "adaptive capacity" is used, while in others it appears as its components (assets and access) or even as "household resilience". The data mapped in figures 3 and 4 are described in different sections of the original paper as resilience, adaptive capacity, and/or vulnerability. The data mapped in figure 5 are described in different sections of the article as vulnerability or resilience. Confounding matters further, the authors' definition for resilience is typical for resilience theory, but the formula for resilience is more typical of the well-known Intergovernmental Panel on Climate Change (IPCC) operationalization of "vulnerability" (Gallopín 2006, Smit and Wandel 2006).
+
+In our reproduction study, the data visualized in figure 4 of the original study and referred to as 40% Adaptive Capacity in table 2 was referred to as **adaptive capacity** while the data visualized in figure 5 of the original study and referred to as 100% Household Resilience in table 2 was referred to as **vulnerability**.
+
+### Attribute variable transformations
+
+The original study's description of attribute variable transformations is confusing, and we attempted to present all of the evidence in the original study clearly. All variables are normalized between zero and five (4.3 and 5.6) with zero representing the worst or poorest condition and five representing the best or richest condition (4.3). The normalization method is not described, but the poorest and richest conditions are described as "quintiles" with values of zero and five (4.3). "Quintiles" suggests classification into five classes with equal counts or frequencies. "Normalization" suggests transforming each variable into a normal distribution. A minimum of zero and maximum of five suggests rescaling the data to a range from zero to five or classifying the data into six quantiles assigned integer values zero through five. Four variables were described as (Y/N) nominal data (T1), for which it is not clear how to transform the data into ordinal data with more than two classes. A similar concern came up for the market access variable with three classes (Rural, Peri-urban, and Urban). Regardless, there is ambiguity in the method of normalizing, scaling, or classifying each variable.
+
+Adaptive capacity is analyzed with the weighted combination of all asset theme indicators and access theme indicators. Weights are given in the Variables section. The formula for this combination is not specified. For 2004, the authors report a minimum household adaptive capacity score of -0.80 and maximum of 39.33 (5.2). A maximum score near 40 is intuitive as a theoretical maximum of 40% for the adaptive capacity category. It is not clear whether the calculation should be a weighted average, weighted sum, weighted combination specified to achieve a maximum of 40%, or some other form of weighted combination. Results of the average adaptive capacity score for traditional authorities in 2010 are visualized in figure 4.
+
+Livelihood sensitivity is presumably calculated with the weighted combination of its four indicators. Weights are given in the Variables section. The formula for this combination is not specified. Physical exposure may be calculated with the weighted combination of its two indicators. Weights are given in the Variables section. The formula for this combination is not specified. It is not specified whether any geographic transformation is required to combine these two variables. 
+
+### Geographic transformations
+
+Adaptive capacity is analyzed in the spatial units of traditional authorities (4.4, 5.2, F3 and F4). This aggregation from households to traditional authorities is accomplished with a spatial join (5.2) with an average of the individual household resilience scores (5.2, 6.3, F3 and F4), and classified into four classes with the Natural Breaks Jenks classification method (F3 and F4). In the methodology section, the authors state that "DHS Indicators were disaggregated to the village level" (4.4). Since the DHS data is described as using the household level of aggregation, it is not clear how or why the data would be "disaggregated" to the village level.
+
+Vulnerability is analyzed in the spatial units of gridded cells (F5). Each theme was converted to the raster grid data format (4.6). The paper does not specify the parameters for raster conversion, including the relationship between vector polygons and raster grid cells or the spatial resolution of the grid cells. Presumably, only adaptive capacity and livelihood sensitivity were converted, since physical exposure is already in a raster grid format. The paper does not specify if or how any geographic transformation is required for the biophysical risk grids from the UNEP Global Risk Data Platform. It may be possible to infer the resolution and methods from close inspection of the final climate vulnerability map (F5). 
+
+
 # Conclusions
+
+
 
 
 # Integrity Statement
