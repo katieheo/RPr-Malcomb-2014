@@ -1,13 +1,13 @@
 ---
 title: "Reproduction Analysis of Malcomb et al 2014"
-author: "Joseph Holler, Kufre Udoh, Drew An-Pham, Middlebury Open GIScience Classes"
+author: "Joseph Holler, Kufre Udoh, Drew An-Pham, Katie Heo, Middlebury Open GIScience Classes"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: html_document
 editor_options:
   markdown:
     wrap: sentence
 knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../../docs/report") })
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../../docs") })
 ---
 
 # Abstract 
@@ -66,9 +66,14 @@ The **spatial extent** of the study was the country of Malawi.
 The **spatial scale** of the study was the third administrative level (traditional authorities) and a raster grid of unknown spatial resolution.
 The **temporal extent** of the study was explicitly 2004&mdash;2010 (4.5), but the contains secondary data collected earlier (3.6 and F5).
 
+The original study included over 70 qualitative semi-structured interviews with officials from development agencies, government, and non-governmental organizations (1.4). 47 specific interviewee titles are listed in a "full list of the interviews" (A1), leaving uncertainty around the remaining 23 (or more) interviewees. The study included 11 village focus groups (1.4). The interviews and focus groups were selected to focus on villages and organizations connected at different levels of organization to "externally designed adaptation projects" (3.2). We presume that the interviewees and focus groups were selected based upon their association with externally designed and funded climate change adaptation projects, which are neither equally nor justly distributed (Barrett 2014). No minimum sample size or stopping criteria were defined.
+
+The original authors used exclusively secondary data for the vulnerability models and did not subset or sample from the secondary data. The published results based on DHS surveys include data 203 traditional authorities in 2010 (F4), whereas the authors state that there are more than 250 populated traditional authorities in Malawi (4.4). The 2010 household resilience data is based upon 24,850 DHS household surveys (5.2). Furthermore, "not every traditional authority had surveys conducted within its administrative boundaries" (5.2). This suggests possible spatial sampling problems in the DHS survey data in the context of its application in this study. The authors' rationales for using the third level administrative units of traditional authorities include matching the political level at which many projects are planned and assessed, and identifying hotspots of vulnerability that are lost in the aggregation to second level districts (4.4). The original paper does not contain any further detail on the spatial sampling or distribution of DHS surveys vis a vis traditional authorities.
+
 The model themes, indicators, and weights were selected based upon 70 interviews and 11 village focus groups from field trips to Malawi in March and August of 2011 (1.4, 4.2 and A1).
 Themes and indicators were also contextualized in literature (3.3 through 3.7) and adjusted based on redundancy and representativeness across the country (4.3).
 The model and weights were adjusted through "several iterations of the model using alternative weighting schemes" (4.3) to produce a "final product that reflects Malawi's contextual and perceptual vulnerability" (4.3).
+
 Each theme was constructed of indicators from a single data provider: adaptive capacity is measured with USAID DHS surveys, livelihood sensitivity is measured with FEWSnet/Malawi Vulnerability Assessment Committee (MVAC) livelihood zones baseline data, and physical exposure is measured with UNEP Global Risk Data Platform data (T1 and T2).
 Although the authors emphasize a grounded local evidence-based selection of indicators and weights (2.1, 4.2, 5.1 and 7.1), other evidence in the publication suggests a model design based on a more pragmatic combination of factors including expert local opinion, deductive theory, and the availability and characteristics of data.
 
@@ -681,7 +686,7 @@ The spatial analysis techniques in this study are not sensitive to edge effects.
 
 The analysis does not include creation of any **spatial subgroups** and does not measure or account for any **spatial autocorrelation**, **spatial heterogeneity**, or **spatial anistropies**.
 
-# Analysis
+# Analysis and Discussion
 
 ## Planned differences from the original study
 
@@ -712,6 +717,14 @@ We will plan to make the following reasonable decisions, which may differ from t
 1. Vulnerability will be calculated so that the aggregate scores have a theoretical minimum of 0 and maximum of 100. This is achieved by inverting physical exposure.
   - Vulnerability = Assets + Access + Livelihood sensitivity + (40 - Physical Exposure)
 1. Any traditional authority missing adaptive capacity data from DHS surveys will be removed / masked from the final vulnerability analysis.
+
+The authors use the terms and definitions of "adaptive capacity", "vulnerability" and "resilience" inconsistently in the paper. Depending on context, both "vulnerability" and "resilience" may refer only to the assets and access portion of the model or to the full model inclusive of adaptive capacity (assets and access), livelihood sensitivity, and exposure. In some sections and formulas, "adaptive capacity" is used, while in others it appears as its components (assets and access) or even as "household resilience". The data mapped in figures 3 and 4 are described in different sections of the original paper as resilience, adaptive capacity, and/or vulnerability. The data mapped in figure 5 are described in different sections of the article as vulnerability or resilience. Confounding matters further, the authors' definition for resilience is typical for resilience theory, but the formula for resilience is more typical of the well-known Intergovernmental Panel on Climate Change (IPCC) operationalization of "vulnerability" (Gallopín 2006, Smit and Wandel 2006).
+
+Adaptive capacity is analyzed in the spatial units of traditional authorities (4.4, 5.2, F3 and F4). This aggregation from households to traditional authorities is accomplished with a spatial join (5.2) with an average of the individual household resilience scores (5.2, 6.3, F3 and F4), and classified into four classes with the Natural Breaks Jenks classification method (F3 and F4). In the methodology section, the authors state that "DHS Indicators were disaggregated to the village level" (4.4). Since the DHS data is described as using the household level of aggregation, it is not clear how or why the data would be "disaggregated" to the village level.
+
+Vulnerability is analyzed in the spatial units of gridded cells (F5). Each theme was converted to the raster grid data format (4.6). The paper does not specify the parameters for raster conversion, including the relationship between vector polygons and raster grid cells or the spatial resolution of the grid cells. Presumably, only adaptive capacity and livelihood sensitivity were converted, since physical exposure is already in a raster grid format. The paper does not specify if or how any geographic transformation is required for the biophysical risk grids from the UNEP Global Risk Data Platform. It may be possible to infer the resolution and methods from close inspection of the final climate vulnerability map (F5). 
+
+In our reproduction study, the data visualized in figure 4 of the original study and referred to as 40% Adaptive Capacity in table 2 was referred to as **adaptive capacity** while the data visualized in figure 5 of the original study and referred to as 100% Household Resilience in table 2 was referred to as **vulnerability**.
 
 ## Adaptive Capacity
 
@@ -1036,6 +1049,7 @@ tm_shape(ta_v) +
 tm_layout(legend.width=3, legend.text.size = .7, legend.title.size = 1, asp=0.8)
 
 ```
+The comparison of Figure 4 in the reproduction study and the original study reflects some areas in Northern and Southern Malawi where the reproduction study has a lower adaptive capacity than the original study (resulting in -2). Most areas reflect differences of 0 to -1, implying that our study calculated slightly lower adaptive capacity of Malawi than the original study. 
 
 ```{r crosstab-fig4, warning=F}
 table(ta_v$rpac_class, ta_v$orac)
@@ -1268,6 +1282,7 @@ vulnerability_r <- (40 - capacity_r) + sensitivity_r + drought_r + flood_r
 names(vulnerability_r) <- "vulnerability"
 plot(vulnerability_r)
 ```
+The additive vulnerability scores are between 33.08 and 82.94. The map reflects medium to high vulnerability in most areas (ranging around the 50-70 area).
 
 ```{r find break & limit values for vulnerability map}
 vuln_max <- max(vulnerability_r[[1]],na.rm = TRUE)
@@ -1316,6 +1331,45 @@ Calculate an aggregated vulnerability score by multiplying low adaptive capacity
 $$
 Vulnerability = (40 - Adaptive Capacity) * Livelihood Sensitivity * (Drought Exposure + Flood Risk)
 $$
+```{r combined-vulnerability}
+# final output (adding component rasters)
+vulnerability_r_2 <- (40 - capacity_r) * sensitivity_r * (drought_r + flood_r) 
+# 100 = highest vulnerability, 0 = lowest vulnerability
+names(vulnerability_r_2) <- "vulnerability"
+plot(vulnerability_r_2)
+```
+The geometric vulnerability scores are between 0 and 16,209.26. The high areas of vulnerability that can be identified are in the north and south of Malawi, whereas the low areas of vulnerability that can be identified are in central Malawi.
+
+
+```{r find break & limit values for vulnerability map}
+vuln_max <- max(vulnerability_r[[1]],na.rm = TRUE)
+vuln_min <- min(vulnerability_r[[1]],na.rm = TRUE)
+```
+
+### Reproduction figure 6
+
+```{r vulnerability-map-2}
+vuln_map_2 = ggplot() +
+  geom_stars(data = vulnerability_r_2) +
+  scale_fill_gradient(
+    low = "#FFFF75",
+    high = "#CF4611",
+    breaks = c(vuln_min, vuln_max),
+    labels = c("Lower Vulnerability", "Higher Vulnerability"),
+    na.value = "transparent",
+    guide = "colourbar",
+    limits = c(vuln_min, vuln_max)
+  ) +
+  labs(title = "Malawi Vulnerability to Climate Change") +
+  theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +   coord_quickmap()
+
+vuln_map_2
+```
 
 ### Evaluate vulnerability reproduction
 
@@ -1434,40 +1488,18 @@ write_stars(vulnerability_r, here(public_d, "fig5or.tif"), layer = "orv")
 write_stars(vulnerability_r, here(public_d, "fig5rp.tif"), layer = "rpv")
 ```
 
-# Discussion
-
-## Navigating Error and Uncertainty
-
-### Data Collection and Spatial Sampling 
-
-The original study included over 70 qualitative semi-structured interviews with officials from development agencies, government, and non-governmental organizations (1.4). 47 specific interviewee titles are listed in a "full list of the interviews" (A1), leaving uncertainty around the remaining 23 (or more) interviewees. The study included 11 village focus groups (1.4). The interviews and focus groups were selected to focus on villages and organizations connected at different levels of organization to "externally designed adaptation projects" (3.2). We presume that the interviewees and focus groups were selected based upon their association with externally designed and funded climate change adaptation projects, which are neither equally nor justly distributed (Barrett 2014). No minimum sample size or stopping criteria were defined.
-
-The original authors used exclusively secondary data for the vulnerability models and did not subset or sample from the secondary data. The published results based on DHS surveys include data 203 traditional authorities in 2010 (F4), whereas the authors state that there are more than 250 populated traditional authorities in Malawi (4.4). The 2010 household resilience data is based upon 24,850 DHS household surveys (5.2). Furthermore, "not every traditional authority had surveys conducted within its administrative boundaries" (5.2). This suggests possible spatial sampling problems in the DHS survey data in the context of its application in this study. The authors' rationales for using the third level administrative units of traditional authorities include matching the political level at which many projects are planned and assessed, and identifying hotspots of vulnerability that are lost in the aggregation to second level districts (4.4). The original paper does not contain any further detail on the spatial sampling or distribution of DHS surveys vis a vis traditional authorities.
-
-### Aggregate thematic concepts
-
-The authors use the terms and definitions of "adaptive capacity", "vulnerability" and "resilience" inconsistently in the paper. Depending on context, both "vulnerability" and "resilience" may refer only to the assets and access portion of the model or to the full model inclusive of adaptive capacity (assets and access), livelihood sensitivity, and exposure. In some sections and formulas, "adaptive capacity" is used, while in others it appears as its components (assets and access) or even as "household resilience". The data mapped in figures 3 and 4 are described in different sections of the original paper as resilience, adaptive capacity, and/or vulnerability. The data mapped in figure 5 are described in different sections of the article as vulnerability or resilience. Confounding matters further, the authors' definition for resilience is typical for resilience theory, but the formula for resilience is more typical of the well-known Intergovernmental Panel on Climate Change (IPCC) operationalization of "vulnerability" (Gallopín 2006, Smit and Wandel 2006).
-
-In our reproduction study, the data visualized in figure 4 of the original study and referred to as 40% Adaptive Capacity in table 2 was referred to as **adaptive capacity** while the data visualized in figure 5 of the original study and referred to as 100% Household Resilience in table 2 was referred to as **vulnerability**.
-
-### Attribute variable transformations
-
-The original study's description of attribute variable transformations is confusing, and we attempted to present all of the evidence in the original study clearly. All variables are normalized between zero and five (4.3 and 5.6) with zero representing the worst or poorest condition and five representing the best or richest condition (4.3). The normalization method is not described, but the poorest and richest conditions are described as "quintiles" with values of zero and five (4.3). "Quintiles" suggests classification into five classes with equal counts or frequencies. "Normalization" suggests transforming each variable into a normal distribution. A minimum of zero and maximum of five suggests rescaling the data to a range from zero to five or classifying the data into six quantiles assigned integer values zero through five. Four variables were described as (Y/N) nominal data (T1), for which it is not clear how to transform the data into ordinal data with more than two classes. A similar concern came up for the market access variable with three classes (Rural, Peri-urban, and Urban). Regardless, there is ambiguity in the method of normalizing, scaling, or classifying each variable.
-
-Adaptive capacity is analyzed with the weighted combination of all asset theme indicators and access theme indicators. Weights are given in the Variables section. The formula for this combination is not specified. For 2004, the authors report a minimum household adaptive capacity score of -0.80 and maximum of 39.33 (5.2). A maximum score near 40 is intuitive as a theoretical maximum of 40% for the adaptive capacity category. It is not clear whether the calculation should be a weighted average, weighted sum, weighted combination specified to achieve a maximum of 40%, or some other form of weighted combination. Results of the average adaptive capacity score for traditional authorities in 2010 are visualized in figure 4.
-
-Livelihood sensitivity is presumably calculated with the weighted combination of its four indicators. Weights are given in the Variables section. The formula for this combination is not specified. Physical exposure may be calculated with the weighted combination of its two indicators. Weights are given in the Variables section. The formula for this combination is not specified. It is not specified whether any geographic transformation is required to combine these two variables. 
-
-### Geographic transformations
-
-Adaptive capacity is analyzed in the spatial units of traditional authorities (4.4, 5.2, F3 and F4). This aggregation from households to traditional authorities is accomplished with a spatial join (5.2) with an average of the individual household resilience scores (5.2, 6.3, F3 and F4), and classified into four classes with the Natural Breaks Jenks classification method (F3 and F4). In the methodology section, the authors state that "DHS Indicators were disaggregated to the village level" (4.4). Since the DHS data is described as using the household level of aggregation, it is not clear how or why the data would be "disaggregated" to the village level.
-
-Vulnerability is analyzed in the spatial units of gridded cells (F5). Each theme was converted to the raster grid data format (4.6). The paper does not specify the parameters for raster conversion, including the relationship between vector polygons and raster grid cells or the spatial resolution of the grid cells. Presumably, only adaptive capacity and livelihood sensitivity were converted, since physical exposure is already in a raster grid format. The paper does not specify if or how any geographic transformation is required for the biophysical risk grids from the UNEP Global Risk Data Platform. It may be possible to infer the resolution and methods from close inspection of the final climate vulnerability map (F5). 
-
 
 # Conclusions
 
+In conclusion, our replication study aimed to reproduce the 2010 household resilience (F4) and climate vulnerability (F5) assessment in Malawi. We clarified definitions of "adaptive capacity" and "vulnerability" in our reproduction study as the original study vaguely outlined the term definitions. The replication process involved various components, including recalculating adaptive capacity scores, rescaling indicators, and exploring different methods for aggregating vulnerability scores. While our study was generally successful in replicating several aspects of the original analysis, we encountered spots in Malawi that reflected different adaptive capacity. We attribute this to limitations in data availability and a lack of clarity regarding the original study's decisions. These differences, particularly in the treatment of geometry errors and missing data, could not be definitely determined from the original study. 
 
+One aspect to think about in our study is the comparison map of Figure 4. The map compared adaptive capacity in our study vs the original study, and most areas reflect differences of 0 to -1, implying that our study calculated slightly lower adaptive capacity of Malawi than the original study. This may be due to methodological differences as there were minor variations to the original study. 
+
+Another important aspect of our study was the comparison of the additive and geometric aggregation methods for vulnerability assessment. The original study used the additive method, which resulted in high vulnerability scores for most areas in Malawi. This made it challenging to identify regions with a vulnerability score of 0. Implementing a geometric aggregation method, on the other hand, allowed for a broader range of vulnerability scores that included 0 and went up to 16,209. Using the geometric aggregation method resulted in more areas with lower vulnerability as seen in Figure 6. The difference was particularly evident when examining the maps in Figure 5 and 6. The additive method identified more regions in Malawi as highly vulnerable, whereas the geometric method predominantly highlighted the most vulnerable areas. Geometric aggregation acknowledges the interactions between indicators and provides a more nuanced perspective on vulnerability (Tate 2012).
+
+Our study emphasizes the importance of clarity and transparency in reporting methodologies and data sources, as discrepancies in data availability and treatment can lead to variations in results. Additionally, the choice of aggregation method for vulnerability assessment is critical, as it can significantly impact the identification of vulnerable areas and influence resource allocation for climate adaptation initiatives. 
+
+However, our study is not without limitations. It is based on a limited population interview sample from Malawi, and it relies on private DHS GPS data that does not permit direct redistribution, making it challenging for others to reproduce our work. Therefore, future research in this field should prioritize access to data, transparent reporting, and the exploration of alternative aggregation methods to enhance the accuracy and utility of climate vulnerability assessments in Malawi and similar regions. These efforts are vital to inform effective climate resilience strategies and foster sustainable development in the face of climate change. 
 
 
 # Integrity Statement
