@@ -1,4 +1,4 @@
-# Planned revisions to the reproduction of the Malcomb et al's Study (2014)
+# Planned revisions to the reproduction of the Malcomb et al. Study (2014)
 
 Author: Katie Heo
 
