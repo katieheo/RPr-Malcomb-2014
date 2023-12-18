@@ -1332,8 +1332,8 @@ $$
 Vulnerability = (40 - Adaptive Capacity) * Livelihood Sensitivity * (Drought Exposure + Flood Risk)
 $$
 ```{r combined-vulnerability-2}
-# final output (adding component rasters)
-vulnerability_r_2 <- (40 - capacity_r) * sensitivity_r * (drought_r + flood_r) 
+# final output (multiplying component rasters)
+vulnerability_r_2 <- (40 - capacity_r) * (sensitivity_r) * (drought_r + flood_r) 
 # 100 = highest vulnerability, 0 = lowest vulnerability
 names(vulnerability_r_2) <- "vulnerability"
 plot(vulnerability_r_2)
@@ -1342,15 +1342,15 @@ The geometric vulnerability scores are between 0 and 16,209.26. The high areas o
 
 
 ```{r find break & limit values for vulnerability map-2}
-vuln_max <- max(vulnerability_r[[1]],na.rm = TRUE)
-vuln_min <- min(vulnerability_r[[1]],na.rm = TRUE)
+vuln_max <- max(vulnerability_r_2[[1]],na.rm = TRUE)
+vuln_min <- min(vulnerability_r_2[[1]],na.rm = TRUE)
 ```
 
 ### Reproduction figure 6
 
 ```{r vulnerability-map-2}
 vuln_map_2 = ggplot() +
-  geom_stars(data = vulnerability_r) +
+  geom_stars(data = vulnerability_r_2) +
   scale_fill_gradient(
     low = "#FFFF75",
     high = "#CF4611",
@@ -1360,7 +1360,7 @@ vuln_map_2 = ggplot() +
     guide = "colourbar",
     limits = c(vuln_min, vuln_max)
   ) +
-  labs(title = "Malawi Vulnerability to Climate Change") +
+  labs(title = "Malawi Vulnerability to Climate Change, Geometric") +
   theme_minimal() +
   theme(
     legend.title = element_blank(),
